@@ -17,7 +17,7 @@ create_map (void)
     {
       for (int j = 0; j < MAP_LENGTH; j++)
         {
-          new_map->map_chars[i * MAP_WIDTH + j] = ' ';
+          new_map->map_chars[i * MAP_WIDTH + j] = '#'; //' ';
         }
     }
 
@@ -51,6 +51,7 @@ print_map (Map *map)
 Room *
 create_rooms (Map *map, int num_rooms)
 {
+  printf ("num_rooms: %d\n", num_rooms);
   Room *rooms = malloc (sizeof (Room) * num_rooms);
 
   for (int i = 0; i < num_rooms; i++)
@@ -59,7 +60,13 @@ create_rooms (Map *map, int num_rooms)
       rooms[i].center.y = rand () % (MAP_LENGTH + 1);
       printf ("i: %d\trooms[i].center.x: %d\trooms[i].center.y: %d\n", i,
               rooms[i].center.x, rooms[i].center.y);
+      printf (
+          "Char at loc: %c\n",
+          map->map_chars[rooms[i].center.x * MAP_WIDTH + rooms[i].center.y]);
       map->map_chars[rooms[i].center.x * MAP_WIDTH + rooms[i].center.y] = '.';
+      printf (
+          "Char at loc: %c\n",
+          map->map_chars[rooms[i].center.x * MAP_WIDTH + rooms[i].center.y]);
     }
 
   return rooms;
