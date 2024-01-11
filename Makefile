@@ -18,4 +18,4 @@ clean:
 	rm $(TARGET)
 
 format:
-	clang-format -style=GNU -i $(SRC_FILES) #$(INCL_FILES)
+	clang-format -style=GNU -i $(SRC_FILES) $(INCL_FILES)
