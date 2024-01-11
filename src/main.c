@@ -8,5 +8,8 @@ main (void)
 {
   Map *map = create_map ();
   print_map (map);
+
+  destroy_map (map);
+
   return 0;
 }

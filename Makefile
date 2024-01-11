@@ -6,13 +6,13 @@ TARGET=main
 CFLAGS=-Wall -Wpedantic -Wextra -Werror
 FORMAT=GNU
 
-all: format $(TARGET) #test
+all: format $(TARGET) test
 
 $(TARGET): 
 	gcc $(SRC_FILES) -I./$(INCL_DIR) -o $(TARGET) $(CFLAGS)
 
 test: $(TARGET)
-	behave
+	valgrind --leak-check=yes ./$(TARGET)
 
 clean:
 	rm $(TARGET)
