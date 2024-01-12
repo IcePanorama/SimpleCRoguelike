@@ -66,30 +66,31 @@ print_map (Map *map)
 Room *
 create_rooms (Map *map, int num_rooms)
 {
-  printf ("num_rooms: %d\n", num_rooms);
-
   Room *rooms = malloc (sizeof (Room) * num_rooms);
 
-  rooms[0].center.x = 3;
-  rooms[0].center.y = 3;
-
-  if (rooms[0].center.x < 0 || rooms[0].center.x >= MAP_WIDTH
-      || rooms[0].center.y < 0 || rooms[0].center.y >= MAP_LENGTH)
+  for (int i = 0; i < num_rooms; i++)
     {
-      printf ("Error: invalid room dimensions\n");
-      destroy_map (map);
-      exit (EXIT_FAILURE);
-    }
+      rooms[i].center.x = rand () % (MAP_WIDTH);
+      rooms[i].center.y = rand () % (MAP_LENGTH);
 
-  int index = rooms[0].center.x * MAP_LENGTH + rooms[0].center.y;
+      if (rooms[i].center.x < 0 || rooms[i].center.x >= MAP_WIDTH
+          || rooms[i].center.y < 0 || rooms[i].center.y >= MAP_LENGTH)
+        {
+          printf ("Error: invalid room dimensions\n");
+          destroy_map (map);
+          exit (EXIT_FAILURE);
+        }
 
-  if (index >= 0 && index < MAP_WIDTH * MAP_LENGTH)
-    {
-      map->map_chars[index] = '.';
-    }
-  else
-    {
-      printf ("Error: index out of bounds.\n");
+      int index = rooms[i].center.x * MAP_LENGTH + rooms[i].center.y;
+
+      if (index >= 0 && index < MAP_WIDTH * MAP_LENGTH)
+        {
+          map->map_chars[index] = '.';
+        }
+      else
+        {
+          printf ("Error: index out of bounds.\n");
+        }
     }
 
   return rooms;
