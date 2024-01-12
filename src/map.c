@@ -10,14 +10,14 @@ Map *
 create_map (void)
 {
   Map *new_map = malloc (sizeof (Map));
-  new_map->map_chars = malloc (sizeof (char *) * MAP_LENGTH * MAP_WIDTH);
+  new_map->map_chars = malloc (sizeof (char) * MAP_LENGTH * MAP_WIDTH);
 
   /* Just fills the map with blank characters */
   for (int i = 0; i < MAP_WIDTH; i++)
     {
       for (int j = 0; j < MAP_LENGTH; j++)
         {
-          new_map->map_chars[i * MAP_WIDTH + j] = '#'; //' ';
+          new_map->map_chars[i * MAP_LENGTH + j] = '#'; //' ';
         }
     }
 
@@ -38,11 +38,26 @@ destroy_map (Map *map)
 void
 print_map (Map *map)
 {
+  // for testing
+  putchar (' ');
+  char letter = 'A';
+  for (int i = 0; i < MAP_LENGTH; i++)
+    {
+      printf ("%c", letter++);
+      if (letter > 'z')
+        {
+          letter = 'A';
+        }
+    }
+  putchar ('\n');
+
+  letter = 'A';
   for (int i = 0; i < MAP_WIDTH; i++)
     {
+      printf ("%c", letter++);
       for (int j = 0; j < MAP_LENGTH; j++)
         {
-          putchar (map->map_chars[i * MAP_WIDTH + j]);
+          putchar (map->map_chars[i * MAP_LENGTH + j]);
         }
       putchar ('\n');
     }
@@ -52,21 +67,29 @@ Room *
 create_rooms (Map *map, int num_rooms)
 {
   printf ("num_rooms: %d\n", num_rooms);
+
   Room *rooms = malloc (sizeof (Room) * num_rooms);
 
-  for (int i = 0; i < num_rooms; i++)
+  rooms[0].center.x = 3;
+  rooms[0].center.y = 3;
+
+  if (rooms[0].center.x < 0 || rooms[0].center.x >= MAP_WIDTH
+      || rooms[0].center.y < 0 || rooms[0].center.y >= MAP_LENGTH)
     {
-      rooms[i].center.x = rand () % (MAP_WIDTH + 1);
-      rooms[i].center.y = rand () % (MAP_LENGTH + 1);
-      printf ("i: %d\trooms[i].center.x: %d\trooms[i].center.y: %d\n", i,
-              rooms[i].center.x, rooms[i].center.y);
-      printf (
-          "Char at loc: %c\n",
-          map->map_chars[rooms[i].center.x * MAP_WIDTH + rooms[i].center.y]);
-      map->map_chars[rooms[i].center.x * MAP_WIDTH + rooms[i].center.y] = '.';
-      printf (
-          "Char at loc: %c\n",
-          map->map_chars[rooms[i].center.x * MAP_WIDTH + rooms[i].center.y]);
+      printf ("Error: invalid room dimensions\n");
+      destroy_map (map);
+      exit (EXIT_FAILURE);
+    }
+
+  int index = rooms[0].center.x * MAP_LENGTH + rooms[0].center.y;
+
+  if (index >= 0 && index < MAP_WIDTH * MAP_LENGTH)
+    {
+      map->map_chars[index] = '.';
+    }
+  else
+    {
+      printf ("Error: index out of bounds.\n");
     }
 
   return rooms;

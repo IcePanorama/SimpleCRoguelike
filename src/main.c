@@ -7,7 +7,8 @@
 int
 main (void)
 {
-  srand (time (0));
+  // srand (time (0));
+  srand (1);
   Map *map = create_map ();
 
   // print_map (map);
