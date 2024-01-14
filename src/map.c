@@ -73,23 +73,8 @@ destroy_map (Map *map)
 void
 print_map (Map *map)
 {
-  // for testing
-  putchar (' ');
-  char letter = 'A';
-  for (int i = 0; i < MAP_LENGTH; i++)
-    {
-      printf ("%c", letter++);
-      if (letter > 'z')
-        {
-          letter = 'A';
-        }
-    }
-  putchar ('\n');
-
-  letter = 'A';
   for (int i = 0; i < MAP_WIDTH; i++)
     {
-      printf ("%c", letter++);
       for (int j = 0; j < MAP_LENGTH; j++)
         {
           putchar (map->map_chars[i][j]);
@@ -111,10 +96,12 @@ create_rooms (Map *map, int num_rooms)
 
   for (int i = 0; i < num_rooms; i++)
     {
-      map->map_chars[0][0] = '.';                          // top left
-      map->map_chars[0][MAP_LENGTH - 1] = '.';             // top right
-      map->map_chars[MAP_WIDTH - 1][MAP_LENGTH - 1] = '.'; // bot right
-      map->map_chars[MAP_WIDTH - 1][0] = '.';              // bot left
+      rooms[i].center.x = rand () % MAP_WIDTH;
+      rooms[i].center.y = rand () % MAP_LENGTH;
+
+      printf ("X: %d\tY: %d\n", rooms[i].center.x, rooms[i].center.y);
+
+      map->map_chars[rooms[i].center.x][rooms[i].center.y] = '.';
     }
 
   return rooms;
