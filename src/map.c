@@ -16,7 +16,18 @@ Map *
 create_map (void)
 {
   Map *new_map = malloc (sizeof (Map));
+  if (new_map == NULL)
+    {
+      puts ("Error allocating new map.");
+      exit (EXIT_FAILURE);
+    }
+
   new_map->map_chars = malloc (sizeof (char *) * MAP_WIDTH);
+  if (new_map->map_chars == NULL)
+    {
+      puts ("Error allocating new map.");
+      exit (EXIT_FAILURE);
+    }
 
   /* Just fills the map with blank characters */
   for (int i = 0; i < MAP_WIDTH; i++)
@@ -69,7 +80,7 @@ print_map (Map *map)
       printf ("%c", letter++);
       for (int j = 0; j < MAP_LENGTH; j++)
         {
-          // putchar (map->map_chars[i * MAP_LENGTH + j]);
+          putchar (map->map_chars[i][j]);
         }
       putchar ('\n');
     }
@@ -88,42 +99,10 @@ create_rooms (Map *map, int num_rooms)
 
   for (int i = 0; i < num_rooms; i++)
     {
-      // FIXME: the x and y are opposite of what they should be atm
-      rooms[i].center.x = rand () % MAP_WIDTH;
-      rooms[i].center.y = rand () % MAP_LENGTH;
-      rooms[i].width = rand () % MAX_ROOM_WIDTH + MIN_ROOM_DIM;
-      rooms[i].length = rand () % MAX_ROOM_LENGTH + MIN_ROOM_DIM;
-      printf ("x: %d\ty: %d\n", rooms[i].center.x, rooms[i].center.y);
-      printf ("room width: %d\troom len: %d\n", rooms[i].width,
-              rooms[i].length);
-
-      // Remove? I think this is no longer really necessary
-      if (rooms[i].center.x < 0 || rooms[i].center.x >= MAP_WIDTH
-          || rooms[i].center.y < 0 || rooms[i].center.y >= MAP_LENGTH)
-        {
-          printf ("Error: invalid room dimensions\n");
-          destroy_map (map);
-          exit (EXIT_FAILURE);
-        }
-
-      int center_index = coord_to_index (rooms[i].center.x, rooms[i].center.y);
-      // map->map_chars[center_index] = '.';
-
-      /*int y = center_index - (MAP_WIDTH * rooms[i].width / 2);
-      while (y < center_index + (MAP_WIDTH * rooms[i].width / 2))
-        {*/
-      int x = center_index - (rooms[i].length / 2);
-      while (x < center_index + (rooms[i].length / 2))
-        {
-          if (x % MAP_LENGTH == 0)
-            {
-              break;
-            }
-          // map->map_chars[x] = '.';
-          x++;
-        }
-      /*y += MAP_WIDTH;
-    }*/
+      map->map_chars[0][0] = '.';                          // top left
+      map->map_chars[0][MAP_LENGTH - 1] = '.';             // top right
+      map->map_chars[MAP_WIDTH - 1][MAP_LENGTH - 1] = '.'; // bot right
+      map->map_chars[MAP_WIDTH - 1][0] = '.';              // bot left
     }
 
   return rooms;
