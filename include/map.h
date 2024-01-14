@@ -1,6 +1,8 @@
 #ifndef _MAP_H_
 #define _MAP_H_
 
+extern const int MAP_LENGTH;
+
 typedef struct Vec2
 {
   int x;
