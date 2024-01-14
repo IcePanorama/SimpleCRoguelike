@@ -10,7 +10,7 @@ main (void)
   srand (time (0));
   Map *map = create_map ();
 
-  map->num_rooms = 5;
+  map->num_rooms = 1;
   map->rooms = create_rooms (map, map->num_rooms);
 
   print_map (map);

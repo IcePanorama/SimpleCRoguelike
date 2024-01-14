@@ -3,7 +3,7 @@ SRC_FILES=$(SRC_DIR)/*.c
 INCL_DIR=include
 INCL_FILES=$(INCL_DIR)/*.h
 TARGET=main
-CFLAGS=-Wall -Wpedantic -Wextra -Werror
+CFLAGS=-Wpedantic -Wextra -Werror #-Wall 
 FORMAT=GNU
 
 all: format $(TARGET) test

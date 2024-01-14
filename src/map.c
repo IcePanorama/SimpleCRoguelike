@@ -16,14 +16,15 @@ Map *
 create_map (void)
 {
   Map *new_map = malloc (sizeof (Map));
-  new_map->map_chars = malloc (sizeof (char) * MAP_LENGTH * MAP_WIDTH);
+  new_map->map_chars = malloc (sizeof (char *) * MAP_WIDTH);
 
   /* Just fills the map with blank characters */
   for (int i = 0; i < MAP_WIDTH; i++)
     {
+      new_map->map_chars[i] = malloc (sizeof (char) * MAP_LENGTH);
       for (int j = 0; j < MAP_LENGTH; j++)
         {
-          new_map->map_chars[i * MAP_LENGTH + j] = '#'; //' ';
+          new_map->map_chars[i][j] = ' ';
         }
     }
 
@@ -33,7 +34,12 @@ create_map (void)
 void
 destroy_map (Map *map)
 {
+  for (int i = 0; i < MAP_WIDTH; i++)
+    {
+      free (map->map_chars[i]);
+    }
   free (map->map_chars);
+
   if (map->rooms != NULL)
     {
       free (map->rooms);
@@ -63,7 +69,7 @@ print_map (Map *map)
       printf ("%c", letter++);
       for (int j = 0; j < MAP_LENGTH; j++)
         {
-          putchar (map->map_chars[i * MAP_LENGTH + j]);
+          // putchar (map->map_chars[i * MAP_LENGTH + j]);
         }
       putchar ('\n');
     }
@@ -91,6 +97,7 @@ create_rooms (Map *map, int num_rooms)
       printf ("room width: %d\troom len: %d\n", rooms[i].width,
               rooms[i].length);
 
+      // Remove? I think this is no longer really necessary
       if (rooms[i].center.x < 0 || rooms[i].center.x >= MAP_WIDTH
           || rooms[i].center.y < 0 || rooms[i].center.y >= MAP_LENGTH)
         {
@@ -99,34 +106,24 @@ create_rooms (Map *map, int num_rooms)
           exit (EXIT_FAILURE);
         }
 
-      // int index = coord_to_index (rooms[i].center.x, rooms[i].center.y);
       int center_index = coord_to_index (rooms[i].center.x, rooms[i].center.y);
+      // map->map_chars[center_index] = '.';
 
+      /*int y = center_index - (MAP_WIDTH * rooms[i].width / 2);
+      while (y < center_index + (MAP_WIDTH * rooms[i].width / 2))
+        {*/
       int x = center_index - (rooms[i].length / 2);
       while (x < center_index + (rooms[i].length / 2))
         {
-          // don't go to the next line
           if (x % MAP_LENGTH == 0)
             {
               break;
             }
-          map->map_chars[x] = '.';
+          // map->map_chars[x] = '.';
           x++;
         }
-
-      /*for (int i = rooms[i].center.x - (rooms[i].length / 2); i >
-      rooms[i].center.x + (rooms[i].length / 2); i++)
-      {
-      }*/
-
-      /*if (index >= 0 && index < MAP_WIDTH * MAP_LENGTH)
-        {
-          map->map_chars[index] = '.';
-        }
-      else
-        {
-          printf ("Error: index out of bounds.\n");
-        }*/
+      /*y += MAP_WIDTH;
+    }*/
     }
 
   return rooms;

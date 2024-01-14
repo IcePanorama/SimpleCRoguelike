@@ -16,7 +16,7 @@ typedef struct Room
 
 typedef struct Map
 {
-  char *map_chars;
+  char **map_chars;
   int num_rooms;
   Room *rooms;
 } Map;
