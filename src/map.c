@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "map.h"
+#include "util.h"
 
 const int MAP_LENGTH = 80;
 const int MAP_WIDTH = 20;
@@ -10,9 +11,6 @@ const int MAX_ROOM_LENGTH = 10;
 const int MAX_ROOM_WIDTH = 8;
 const int MIN_ROOM_DIM = 5;
 const float MIN_ROOM_SPACING = 30.0f;
-
-int coord_to_index (int x, int y);
-float distance (int x1, int y1, int x2, int y2);
 
 Map *
 create_map (void)
