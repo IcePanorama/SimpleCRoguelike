@@ -26,6 +26,7 @@ create_map (void)
   if (new_map->map_chars == NULL)
     {
       puts ("Error allocating new map.");
+      free (new_map);
       exit (EXIT_FAILURE);
     }
 
@@ -33,6 +34,17 @@ create_map (void)
   for (int i = 0; i < MAP_WIDTH; i++)
     {
       new_map->map_chars[i] = malloc (sizeof (char) * MAP_LENGTH);
+      if (new_map->map_chars[i] == NULL)
+        {
+          printf ("Error allocating line %d of new map.\n", i);
+          for (int j = 0; j < i - 1; j++)
+            {
+              free (new_map->map_chars[j]);
+            }
+          free (new_map);
+          exit (EXIT_FAILURE);
+        }
+
       for (int j = 0; j < MAP_LENGTH; j++)
         {
           new_map->map_chars[i][j] = ' ';
