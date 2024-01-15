@@ -13,6 +13,8 @@ const float MIN_ROOM_SPACING = 30.0f;
 Room generate_room (void);
 float calc_avg_room_spacing (Room *rooms, int num_rooms);
 void add_rooms_to_map_chars (Map *map, Room *rooms);
+Room find_first_room_after_index (Room *rooms, int num_rooms,
+                                  int starting_index);
 
 Room *
 create_rooms (Map *map, int num_rooms)
@@ -79,7 +81,7 @@ add_rooms_to_map_chars (Map *map, Room *rooms)
   for (int i = 0; i < map->num_rooms; i++)
     {
       printf ("x: %d, y: %d\n", rooms[i].center.x, rooms[i].center.y);
-      printf ("width: %d, len: %d\n", rooms[i].width, rooms[i].length);
+      // printf ("width: %d, len: %d\n", rooms[i].width, rooms[i].length);
       for (int x = rooms[i].center.x - (rooms[i].width / 2);
            x < rooms[i].center.x + (rooms[i].width / 2); x++)
         {
@@ -99,4 +101,22 @@ add_rooms_to_map_chars (Map *map, Room *rooms)
         }
       map->map_chars[rooms[i].center.x][rooms[i].center.y] = '@';
     }
+}
+
+Room
+find_first_room (Room *rooms, int num_rooms)
+{
+  /* finds the room furthest to the left */
+  Room first_room;
+  int y = MAP_LENGTH;
+  for (int i = 0; i < num_rooms; i++)
+    {
+      if (rooms[i].center.y < y)
+        {
+          y = rooms[i].center.y;
+          first_room = rooms[i];
+        }
+    }
+
+  return first_room;
 }

@@ -15,5 +15,6 @@ typedef struct Room
 } Room;
 
 Room *create_rooms (Map *map, int num_rooms);
+Room find_first_room (Room *rooms, int num_rooms);
 
 #endif

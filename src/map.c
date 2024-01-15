@@ -6,6 +6,8 @@
 const int MAP_LENGTH = 80;
 const int MAP_WIDTH = 20;
 
+// void generate_paths (Room *rooms);
+
 Map *
 create_map (void)
 {
@@ -77,3 +79,8 @@ print_map (Map *map)
       putchar ('\n');
     }
 }
+
+/*void
+generate_paths (Room *rooms)
+{
+}*/
