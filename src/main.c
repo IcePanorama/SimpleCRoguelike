@@ -17,6 +17,12 @@ main (void)
   printf ("-- First room\nx: %d\ty: %d\n", room.center.x, room.center.y);
   map->map_chars[room.center.x][room.center.y] = 'X';
 
+  Room next_room
+      = find_first_room_skip_room (map->rooms, map->num_rooms, room);
+  printf ("-- Second room\nx: %d\ty: %d\n", next_room.center.x,
+          next_room.center.y);
+  map->map_chars[next_room.center.x][next_room.center.y] = '?';
+
   print_map (map);
   destroy_map (map);
 

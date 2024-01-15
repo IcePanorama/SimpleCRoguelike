@@ -13,8 +13,7 @@ const float MIN_ROOM_SPACING = 30.0f;
 Room generate_room (void);
 float calc_avg_room_spacing (Room *rooms, int num_rooms);
 void add_rooms_to_map_chars (Map *map, Room *rooms);
-Room find_first_room_after_index (Room *rooms, int num_rooms,
-                                  int starting_index);
+int rooms_equal (Room room1, Room room2);
 
 Room *
 create_rooms (Map *map, int num_rooms)
@@ -119,4 +118,33 @@ find_first_room (Room *rooms, int num_rooms)
     }
 
   return first_room;
+}
+
+// idk if I like this func name either
+Room
+find_first_room_skip_room (Room *rooms, int num_rooms, Room skip_room)
+{
+  /* finds the room furthest to the left, but skips given room */
+  Room first_room;
+  int y = MAP_LENGTH;
+  for (int i = 0; i < num_rooms; i++)
+    {
+      if (rooms_equal (rooms[i], skip_room))
+        {
+          continue;
+        }
+      if (rooms[i].center.y < y)
+        {
+          y = rooms[i].center.y;
+          first_room = rooms[i];
+        }
+    }
+
+  return first_room;
+}
+
+int
+rooms_equal (Room room1, Room room2)
+{
+  return room1.center.x == room2.center.x && room1.center.y == room2.center.y;
 }
