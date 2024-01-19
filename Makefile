@@ -3,11 +3,11 @@ SRC_FILES=$(SRC_DIR)/*.c
 INCL_DIR=include
 INCL_FILES=$(INCL_DIR)/*.h
 LIBS=-lm
-TARGET=main
+TARGET=game
 CFLAGS=-Wpedantic -Wextra -Werror -Wall 
 FORMAT=GNU
 
-all: format $(TARGET) test
+all: clean format $(TARGET) test
 
 $(TARGET): 
 	gcc $(SRC_FILES) -I./$(INCL_DIR) -o $(TARGET) $(LIBS) $(CFLAGS)
@@ -16,7 +16,7 @@ test: $(TARGET)
 	valgrind --leak-check=yes ./$(TARGET)
 
 clean:
-	rm $(TARGET)
+	-@rm $(TARGET) 2>/dev/null || true
 
 format:
 	clang-format -style=GNU -i $(SRC_FILES) $(INCL_FILES)
