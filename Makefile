@@ -5,7 +5,7 @@ INCL_FILES=$(INCL_DIR)/*.h
 LIBS=-lm
 TARGET=game
 CFLAGS=-Wpedantic -Wextra -Werror -Wall 
-FORMAT=GNU
+STYLE=GNU
 
 all: clean format $(TARGET) test
 
@@ -18,5 +18,5 @@ test: $(TARGET)
 clean:
 	-@rm $(TARGET) 2>/dev/null || true
 
-format:
-	clang-format -style=GNU -i $(SRC_FILES) $(INCL_FILES)
+format: 
+	clang-format -style=$(STYLE) -i $(SRC_FILES) $(INCL_FILES)
