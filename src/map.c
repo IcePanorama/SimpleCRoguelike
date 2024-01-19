@@ -8,6 +8,8 @@
 const int MAP_LENGTH = 80;
 const int MAP_WIDTH = 20;
 
+int draw_hor_path (Map *map, Vec2 start_pos, Vec2 end_pos, int x);
+
 Map *
 create_map (void)
 {
@@ -87,27 +89,15 @@ generate_paths (Map *map)
   Room room2;
 
   room1 = find_first_room (map->rooms, map->num_rooms);
-  map->map_chars[room1.center.x][room1.center.y] = 'X';
 
   room2 = find_first_room_skip_room (map->rooms, map->num_rooms, room1);
-  map->map_chars[room2.center.x][room2.center.y] = '?';
-
-  // printf ("x dist: %f\ty dist: %f\n", x_dist, y_dist);
-  int y = room1.center.y;
-  while (y <= room2.center.y)
-    {
-      // printf ("y: %d\n", y);
-      if (map->map_chars[room1.center.x][y] == ' ')
-        {
-          map->map_chars[room1.center.x][y] = '#';
-        }
-      y++;
-    }
 
   int x = room1.center.x;
+  int y = draw_hor_path (map, room1.center, room2.center, x);
+  printf ("y: %d\n", y);
+
   while (x != room2.center.x)
     {
-      // printf ("x: %d\n", x);
       if (map->map_chars[x][y] == ' ')
         {
           map->map_chars[x][y] = '#';
@@ -121,4 +111,19 @@ generate_paths (Map *map)
           x--;
         }
     }
+}
+
+int
+draw_hor_path (Map *map, Vec2 start_pos, Vec2 end_pos, int x)
+{
+  int y = start_pos.y;
+  while (y <= end_pos.y)
+    {
+      if (map->map_chars[x][y] == ' ')
+        {
+          map->map_chars[x][y] = '#';
+        }
+      y++;
+    }
+  return y - 1;
 }

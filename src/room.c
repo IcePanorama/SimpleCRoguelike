@@ -27,6 +27,7 @@ create_rooms (Map *map, int num_rooms)
     }
   map->num_rooms = num_rooms;
 
+  // FIXME: fix rooms overlapping
   float room_spacing = 0;
   while (room_spacing < MIN_ROOM_SPACING)
     {
@@ -98,7 +99,7 @@ add_rooms_to_map_chars (Map *map, Room *rooms)
               map->map_chars[x][y] = '.';
             }
         }
-      map->map_chars[rooms[i].center.x][rooms[i].center.y] = '@';
+      // map->map_chars[rooms[i].center.x][rooms[i].center.y] = '@';
     }
 }
 
