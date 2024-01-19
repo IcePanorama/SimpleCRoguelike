@@ -9,6 +9,7 @@ const int MAP_LENGTH = 80;
 const int MAP_WIDTH = 20;
 
 int draw_hor_path (Map *map, Vec2 start_pos, Vec2 end_pos, int x);
+void draw_vert_path (Map *map, Vec2 end_pos, int x, int y);
 
 Map *
 create_map (void)
@@ -94,23 +95,10 @@ generate_paths (Map *map)
 
   int x = room1.center.x;
   int y = draw_hor_path (map, room1.center, room2.center, x);
+  // temp to prevent unused type Werror
   printf ("y: %d\n", y);
 
-  while (x != room2.center.x)
-    {
-      if (map->map_chars[x][y] == ' ')
-        {
-          map->map_chars[x][y] = '#';
-        }
-      if (x < room2.center.x)
-        {
-          x++;
-        }
-      else
-        {
-          x--;
-        }
-    }
+  draw_vert_path (map, room2.center, x, y);
 }
 
 int
@@ -126,4 +114,24 @@ draw_hor_path (Map *map, Vec2 start_pos, Vec2 end_pos, int x)
       y++;
     }
   return y - 1;
+}
+
+void
+draw_vert_path (Map *map, Vec2 end_pos, int x, int y)
+{
+  while (x != end_pos.x)
+    {
+      if (map->map_chars[x][y] == ' ')
+        {
+          map->map_chars[x][y] = '#';
+        }
+      if (x < end_pos.x)
+        {
+          x++;
+        }
+      else
+        {
+          x--;
+        }
+    }
 }
