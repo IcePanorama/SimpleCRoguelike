@@ -145,17 +145,13 @@ find_first_room_skip_room (Room *rooms, int num_rooms, Room skip_room)
 int
 rooms_equal (Room room1, Room room2)
 {
-  printf ("x1: %d\tx2: %d\ty1: %d\ty2: %d\n", room1.center.x, room2.center.x,
-          room1.center.y, room2.center.y);
   return room1.center.x == room2.center.x && room1.center.y == room2.center.y;
 }
 
 Room *
 sort_rooms (Map *map, Room *old_rooms)
 {
-  // FIXME: leaking memory here
   Room *sorted_rooms = malloc (sizeof (Room) * map->num_rooms);
-  // Room sorted_rooms[map->num_rooms];
   if (sorted_rooms == NULL)
     {
       puts ("Error allocating sorted rooms.");
@@ -170,7 +166,7 @@ sort_rooms (Map *map, Room *old_rooms)
                                                     sorted_rooms, i);
     }
 
-  // free (old_rooms);
+  free (old_rooms);
   return sorted_rooms;
 }
 

@@ -89,12 +89,9 @@ generate_paths (Map *map)
   map->rooms = sort_rooms (map, map->rooms);
 
   Room room1 = map->rooms[0];
-  map->map_chars[room1.center.x][room1.center.y] = '@';
   for (int i = 1; i < map->num_rooms; i++)
     {
       Room room2 = map->rooms[i];
-      map->map_chars[room2.center.x][room2.center.y] = '@';
-      printf ("x: %d\ty: %d\n", room2.center.x, room2.center.y);
 
       int x = room1.center.x;
       int y = draw_hor_path (map, room1.center, room2.center, x);
