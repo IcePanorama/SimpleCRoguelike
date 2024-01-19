@@ -79,7 +79,7 @@ add_rooms_to_map_chars (Map *map, Room *rooms)
 {
   for (int i = 0; i < map->num_rooms; i++)
     {
-      printf ("x: %d, y: %d\n", rooms[i].center.x, rooms[i].center.y);
+      // printf ("x: %d, y: %d\n", rooms[i].center.x, rooms[i].center.y);
       // printf ("width: %d, len: %d\n", rooms[i].width, rooms[i].length);
       for (int x = rooms[i].center.x - (rooms[i].width / 2);
            x < rooms[i].center.x + (rooms[i].width / 2); x++)

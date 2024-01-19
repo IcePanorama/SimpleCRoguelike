@@ -2,11 +2,11 @@
 #include <stdlib.h>
 
 #include "map.h"
+#include "room.h"
+#include "util.h"
 
 const int MAP_LENGTH = 80;
 const int MAP_WIDTH = 20;
-
-// void generate_paths (Room *rooms);
 
 Map *
 create_map (void)
@@ -80,7 +80,45 @@ print_map (Map *map)
     }
 }
 
-/*void
-generate_paths (Room *rooms)
+void
+generate_paths (Map *map)
 {
-}*/
+  Room room1;
+  Room room2;
+
+  room1 = find_first_room (map->rooms, map->num_rooms);
+  map->map_chars[room1.center.x][room1.center.y] = 'X';
+
+  room2 = find_first_room_skip_room (map->rooms, map->num_rooms, room1);
+  map->map_chars[room2.center.x][room2.center.y] = '?';
+
+  // printf ("x dist: %f\ty dist: %f\n", x_dist, y_dist);
+  int y = room1.center.y;
+  while (y <= room2.center.y)
+    {
+      // printf ("y: %d\n", y);
+      if (map->map_chars[room1.center.x][y] == ' ')
+        {
+          map->map_chars[room1.center.x][y] = '#';
+        }
+      y++;
+    }
+
+  int x = room1.center.x;
+  while (x != room2.center.x)
+    {
+      // printf ("x: %d\n", x);
+      if (map->map_chars[x][y] == ' ')
+        {
+          map->map_chars[x][y] = '#';
+        }
+      if (x < room2.center.x)
+        {
+          x++;
+        }
+      else
+        {
+          x--;
+        }
+    }
+}

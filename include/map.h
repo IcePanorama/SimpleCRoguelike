@@ -14,5 +14,6 @@ typedef struct Map
 Map *create_map (void);
 void destroy_map (Map *map);
 void print_map (Map *map);
+void generate_paths (Map *map);
 
 #endif

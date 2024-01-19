@@ -12,16 +12,10 @@ main (void)
   Map *map = create_map ();
 
   map->rooms = create_rooms (map, 5);
-
-  Room room = find_first_room (map->rooms, map->num_rooms);
-  printf ("-- First room\nx: %d\ty: %d\n", room.center.x, room.center.y);
-  map->map_chars[room.center.x][room.center.y] = 'X';
-
-  Room next_room
-      = find_first_room_skip_room (map->rooms, map->num_rooms, room);
-  printf ("-- Second room\nx: %d\ty: %d\n", next_room.center.x,
-          next_room.center.y);
-  map->map_chars[next_room.center.x][next_room.center.y] = '?';
+  generate_paths (map);
+  // TODO: redo room drawing so rooms don't overlap
+  //  add doors to rooms
+  //  connect rooms by connection doors
 
   print_map (map);
   destroy_map (map);
