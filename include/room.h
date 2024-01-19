@@ -17,5 +17,8 @@ typedef struct Room
 Room *create_rooms (Map *map, int num_rooms);
 Room find_first_room (Room *rooms, int num_rooms);
 Room find_first_room_skip_room (Room *rooms, int num_rooms, Room skip_room);
+Room find_first_room_skip_rooms (Room *rooms, int num_rooms, Room *skip_rooms,
+                                 int num_skip_rooms);
+Room *sort_rooms (Map *map, Room *old_rooms);
 
 #endif

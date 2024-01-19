@@ -86,19 +86,23 @@ print_map (Map *map)
 void
 generate_paths (Map *map)
 {
-  Room room1;
-  Room room2;
+  map->rooms = sort_rooms (map, map->rooms);
 
-  room1 = find_first_room (map->rooms, map->num_rooms);
+  Room room1 = map->rooms[0];
+  map->map_chars[room1.center.x][room1.center.y] = '@';
+  for (int i = 1; i < map->num_rooms; i++)
+    {
+      Room room2 = map->rooms[i];
+      map->map_chars[room2.center.x][room2.center.y] = '@';
+      printf ("x: %d\ty: %d\n", room2.center.x, room2.center.y);
 
-  room2 = find_first_room_skip_room (map->rooms, map->num_rooms, room1);
+      int x = room1.center.x;
+      int y = draw_hor_path (map, room1.center, room2.center, x);
 
-  int x = room1.center.x;
-  int y = draw_hor_path (map, room1.center, room2.center, x);
-  // temp to prevent unused type Werror
-  printf ("y: %d\n", y);
+      draw_vert_path (map, room2.center, x, y);
 
-  draw_vert_path (map, room2.center, x, y);
+      room1 = room2;
+    }
 }
 
 int

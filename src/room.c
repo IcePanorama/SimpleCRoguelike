@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -80,8 +81,6 @@ add_rooms_to_map_chars (Map *map, Room *rooms)
 {
   for (int i = 0; i < map->num_rooms; i++)
     {
-      // printf ("x: %d, y: %d\n", rooms[i].center.x, rooms[i].center.y);
-      // printf ("width: %d, len: %d\n", rooms[i].width, rooms[i].length);
       for (int x = rooms[i].center.x - (rooms[i].width / 2);
            x < rooms[i].center.x + (rooms[i].width / 2); x++)
         {
@@ -99,7 +98,6 @@ add_rooms_to_map_chars (Map *map, Room *rooms)
               map->map_chars[x][y] = '.';
             }
         }
-      // map->map_chars[rooms[i].center.x][rooms[i].center.y] = '@';
     }
 }
 
@@ -147,5 +145,66 @@ find_first_room_skip_room (Room *rooms, int num_rooms, Room skip_room)
 int
 rooms_equal (Room room1, Room room2)
 {
+  printf ("x1: %d\tx2: %d\ty1: %d\ty2: %d\n", room1.center.x, room2.center.x,
+          room1.center.y, room2.center.y);
   return room1.center.x == room2.center.x && room1.center.y == room2.center.y;
+}
+
+Room *
+sort_rooms (Map *map, Room *old_rooms)
+{
+  // FIXME: leaking memory here
+  Room *sorted_rooms = malloc (sizeof (Room) * map->num_rooms);
+  // Room sorted_rooms[map->num_rooms];
+  if (sorted_rooms == NULL)
+    {
+      puts ("Error allocating sorted rooms.");
+      destroy_map (map);
+      exit (EXIT_FAILURE);
+    }
+
+  sorted_rooms[0] = find_first_room (old_rooms, map->num_rooms);
+  for (int i = 1; i < map->num_rooms; i++)
+    {
+      sorted_rooms[i] = find_first_room_skip_rooms (old_rooms, map->num_rooms,
+                                                    sorted_rooms, i);
+    }
+
+  // free (old_rooms);
+  return sorted_rooms;
+}
+
+Room
+find_first_room_skip_rooms (Room *rooms, int num_rooms, Room *skip_rooms,
+                            int num_skip_rooms)
+{
+  /* finds the room furthest to the left, but skips given rooms */
+  bool shouldSkip = false;
+  Room first_room;
+  int y = MAP_LENGTH;
+  for (int i = 0; i < num_rooms; i++)
+    {
+      for (int j = 0; j < num_skip_rooms; j++)
+        {
+          shouldSkip = false;
+          if (rooms_equal (rooms[i], skip_rooms[j]))
+            {
+              shouldSkip = true;
+              break;
+            }
+        }
+
+      if (shouldSkip)
+        {
+          continue;
+        }
+
+      if (rooms[i].center.y < y)
+        {
+          y = rooms[i].center.y;
+          first_room = rooms[i];
+        }
+    }
+
+  return first_room;
 }
