@@ -9,7 +9,7 @@
 const int MAX_ROOM_LENGTH = 10;
 const int MAX_ROOM_WIDTH = 8;
 const int MIN_ROOM_DIM = 5;
-const float MIN_ROOM_SPACING = 30.0f;
+const float MIN_ROOM_SPACING = 50.0f; // 30.0f;
 
 Room generate_room (void);
 float calc_avg_room_spacing (Room *rooms, int num_rooms);
@@ -36,7 +36,6 @@ create_rooms (Map *map, int num_rooms)
         {
           rooms[i] = generate_room ();
         }
-
       room_spacing = calc_avg_room_spacing (rooms, map->num_rooms);
     }
 
@@ -203,4 +202,47 @@ find_first_room_skip_rooms (Room *rooms, int num_rooms, Room *skip_rooms,
     }
 
   return first_room;
+}
+
+bool
+rooms_overlap (Room *rooms, int num_rooms)
+{
+  // int boundaries[num_rooms][4];
+
+  for (int i = 0; i < num_rooms; i++)
+    {
+      int x = rooms[i].center.x;
+      int y = rooms[i].center.y;
+      int width = rooms[i].width;
+      int length = rooms[i].length;
+
+      int left = x - width / 2;
+      int right = x + width / 2;
+      int top = y - length / 2;
+      int bot = y + length / 2;
+
+      for (int j = 0; j < i; j++)
+        {
+          int prev_left
+              = rooms[j].center.x - rooms[j].width / 2; // boundaries[j][0];
+          int prev_right
+              = rooms[j].center.x + rooms[j].width / 2; // boundaries[j][1];
+          int prev_top
+              = rooms[j].center.y - rooms[j].length / 2; // boundaries[j][2];
+          int prev_bot
+              = rooms[j].center.y + rooms[j].length / 2; // boundaries[j][3];
+
+          if (!(right < prev_left || left > prev_right || top < prev_bot
+                || bot > prev_top))
+            {
+              return false;
+            }
+        }
+      /*boundaries[i][0] = left;
+      boundaries[i][1] = right;
+      boundaries[i][2] = top;
+      boundaries[i][3] = bot;*/
+    }
+
+  return true;
 }
